@@ -2,6 +2,7 @@
  <router-view></router-view>
 </template>
 <style lang="scss">
+@import "../node_modules/material-design-icons/iconfont/material-icons.css";
 @import "../node_modules/material-design-lite/src/material-design-lite";
 @import "./assets/scss/main";
 body {
