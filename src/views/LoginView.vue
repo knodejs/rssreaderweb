@@ -20,7 +20,7 @@
         </button>
         <br/>
         <br/>
-        <p>Haven't yet an account ? <a href="#">Register here</a></p>
+        <p>Haven't yet an account ?  <router-link to="/register">Register here</router-link></p>
       </form>
     </div>
   </div>
@@ -62,6 +62,10 @@
         h3 {
           font-size: 25px;
         }
+      }
+
+      @media only screen and (max-width: 767px) {
+        max-width: 360px;
       }
     }
   }
