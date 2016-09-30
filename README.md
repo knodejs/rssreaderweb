@@ -1,6 +1,5 @@
-# rssreaderwebv2
-
-> RSS Reader Web Version
+# rssreaderweb
+RSS Reader progressive web app using Vue.js 2.0 , Vuex and Vue Router
 
 ## Build Setup
 
