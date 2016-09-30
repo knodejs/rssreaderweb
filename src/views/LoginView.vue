@@ -18,6 +18,9 @@
         <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent mdl-js-ripple-effect" type="submit">
           Login
         </button>
+        <br/>
+        <br/>
+        <p>Haven't yet an account ? <a href="#">Register here</a></p>
       </form>
     </div>
   </div>
@@ -37,6 +40,10 @@
       box-shadow: rgba(0, 0, 0, 0.14902) 0px 1px 1px 0px, rgba(0, 0, 0, 0.09804) 0px 1px 2px 0px;
       padding-bottom:30px;
 
+      p {
+        text-align:center;
+      }
+
       form {
         padding: 10px 30px;
         .mdl-textfield {
@@ -48,7 +55,7 @@
       }
 
       header {
-        background: #03a9f4;
+        background: #673AB7;
         margin: 0;
         padding: 10px 20px;
         color: #fff;

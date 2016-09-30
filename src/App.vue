@@ -6,5 +6,6 @@
 @import "./assets/scss/main";
 body {
   background-color: #f2f3f5;
+  font-family: 'Roboto', sans-serif;
 }
 </style>
