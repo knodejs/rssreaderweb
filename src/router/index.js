@@ -30,6 +30,6 @@ export default new Router({
       auth.logout()
       next('/')
     }},
-    { path: '/', component: DashboardView }
+    { path: '/', component: DashboardView, beforeEnter: requireAuth }
   ]
 })
