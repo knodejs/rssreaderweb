@@ -5,6 +5,9 @@
         <h3>Login</h3>
       </header>
       <form @submit.prevent="loginUser">
+        <div class="alert-danger" v-if="error">
+          <p>{{ error }}</p>
+        </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input" type="email" v-model="user.email" id="email">
           <label class="mdl-textfield__label" for="email">Email</label>
@@ -26,20 +29,26 @@
   </div>
 </template>
 <script>
+import auth from '../router/auth'
+
 export default {
   data() {
     return {
       user: {
         email: '',
         password: ''
-      }
+      },
+      error: ''
     }
   },
   methods: {
     loginUser() {
+      const self = this
       this.$http.post('https://readr.meetgodhani.com/api/login',this.user).then((res) => {
         auth.login(res.data.token,res.data.user);
         window.location = "/";
+      },(res) => {
+        self.error = res.data.msg
       })
     }
   }
@@ -59,6 +68,12 @@ export default {
     margin: 0 auto;
     box-shadow: rgba(0, 0, 0, 0.14902) 0px 1px 1px 0px, rgba(0, 0, 0, 0.09804) 0px 1px 2px 0px;
     padding-bottom:30px;
+
+
+    .alert-danger {
+      margin-top:10px;
+      color: red;
+    }
 
     p {
       text-align:center;

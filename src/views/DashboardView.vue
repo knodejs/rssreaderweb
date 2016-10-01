@@ -22,12 +22,91 @@
       </nav>
     </div>
     <main class="mdl-layout__content">
+      <div class="page-content">
+        <div class="article-list">
+          <ul>
+            <li class="news-item" v-for="article in articles">
+              <div class="title">
+                  {{ article.title }}
+              </div>
+              <div class="meta">
+                <img v-bind:src="article.feed.favicon" width="15" height="15" v-bind:alt="article.feed.title">
+                <span class="author">{{ article.feed.title }} |</span>
+                <span class="timeago">{{ article.published_at }}</span>
+              </div>
+            </li>
+          </ul>
+          <infinite-loading :on-infinite="onInfinite" spinner="spiral" ref="InfiniteLoading">
+            <span slot="no-more">
+              There is no articles available.
+            </span>
+          </infinite-loading>
+        </div>
+        <div class="subscribebtn-container">
+        <button @click="showModal" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+          <i class="material-icons">add</i>
+        </button>
+      </div>
     </main>
   </div>
 </template>
 <script>
 import InfiniteLoading from 'vue-infinite-loading';
 import moment from 'moment-timezone';
+
+export default {
+  data() {
+    return {
+      articles: [],
+      url: null,
+      page: 1
+    }
+  },
+  components: {
+    InfiniteLoading
+  },
+  methods: {
+    onInfinite() {
+      const self = this;
+
+      var url = "https://readr.meetgodhani.com/api/articles?page=" + self.page;
+
+      if('caches' in window) {
+        caches.match(url).then(function(response) {
+          if(response) {
+            response.json().then(function updateFromCache(json) {
+              if(json.length > 0) {
+                self.articles = self.artiles.concat(json);
+                self.page++
+                self.$refs.InfiniteLoading.$emit('$InfiniteLoading:loaded');
+              } else {
+                self.$refs.InfiniteLoading.$emit('$InfiniteLoading:complete');
+              }
+            });
+          }
+        })
+      }
+
+      this.$http.get('https://readr.meetgodhani.com/api/articles', {
+        params: {
+          page: self.page
+        }
+      }).then((res) => {
+        if(res.data.length > 0) {
+          var resdata = res.data.map((item) => {
+            item.published_at = moment.tz(item.published_at,"America/Toronto").fromNow();
+            return item;
+          });
+          self.articles = self.articles.concat(res);
+          self.page++;
+          self.$refs.InfiniteLoading.$emit('$InfiniteLoading:loaded');
+        } else {
+          self.$refs.InfiniteLoading.$emit('$InfiniteLoading:complete');
+        }
+      })
+    }
+  }
+}
 </script>
 <style lang="scss">
 .subscribebtn-container {
