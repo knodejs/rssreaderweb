@@ -4,13 +4,13 @@
       <header>
         <h3>Login</h3>
       </header>
-      <form>
+      <form @submit.prevent="loginUser">
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" id="email">
+          <input class="mdl-textfield__input" type="email" v-model="user.email" id="email">
           <label class="mdl-textfield__label" for="email">Email</label>
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="password" id="password">
+          <input class="mdl-textfield__input" type="password" v-model="user.password" id="password">
           <label class="mdl-textfield__label" for="password">Password</label>
         </div>
         <br/>
@@ -20,53 +20,73 @@
         </button>
         <br/>
         <br/>
-        <p>Haven't yet an account ?  <router-link to="/register">Register here</router-link></p>
+        <p>Haven't yet an account ?  <a href="/register">Register here</a></p>
       </form>
     </div>
   </div>
 </template>
-<style lang="scss">
-  .auth {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    @at-root #{&}__container {
-      max-width: 400px;
-      width: 100%;
-      position: relative;
-      background: white;
-      margin: 0 auto;
-      box-shadow: rgba(0, 0, 0, 0.14902) 0px 1px 1px 0px, rgba(0, 0, 0, 0.09804) 0px 1px 2px 0px;
-      padding-bottom:30px;
-
-      p {
-        text-align:center;
-      }
-
-      form {
-        padding: 10px 30px;
-        .mdl-textfield {
-          width: 100%;
-        }
-        .mdl-button {
-          width: 100%;
-        }
-      }
-
-      header {
-        background: #673AB7;
-        margin: 0;
-        padding: 10px 20px;
-        color: #fff;
-        h3 {
-          font-size: 25px;
-        }
-      }
-
-      @media only screen and (max-width: 767px) {
-        max-width: 360px;
+<script>
+export default {
+  data() {
+    return {
+      user: {
+        email: '',
+        password: ''
       }
     }
+  },
+  methods: {
+    loginUser() {
+      this.$http.post('https://readr.meetgodhani.com/api/login',this.user).then((res) => {
+        auth.login(res.data.token,res.data.user);
+        window.location = "/";
+      })
+    }
   }
+}
+</script>
+<style lang="scss">
+.auth {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @at-root #{&}__container {
+    max-width: 400px;
+    width: 100%;
+    position: relative;
+    background: white;
+    margin: 0 auto;
+    box-shadow: rgba(0, 0, 0, 0.14902) 0px 1px 1px 0px, rgba(0, 0, 0, 0.09804) 0px 1px 2px 0px;
+    padding-bottom:30px;
+
+    p {
+      text-align:center;
+    }
+
+    form {
+      padding: 10px 30px;
+      .mdl-textfield {
+        width: 100%;
+      }
+      .mdl-button {
+        width: 100%;
+      }
+    }
+
+    header {
+      background: #673AB7;
+      margin: 0;
+      padding: 10px 20px;
+      color: #fff;
+      h3 {
+        font-size: 25px;
+      }
+    }
+
+    @media only screen and (max-width: 767px) {
+      max-width: 360px;
+    }
+  }
+}
 </style>

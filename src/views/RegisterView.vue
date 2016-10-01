@@ -4,17 +4,17 @@
       <header>
         <h3>Register</h3>
       </header>
-      <form>
+      <form @submit.prevent="registerUser">
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" id="email">
-          <label class="mdl-textfield__label" for="email">Name</label>
+          <input class="mdl-textfield__input" type="text" v-model="user.name" id="name">
+          <label class="mdl-textfield__label" for="name">Name</label>
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="email" id="email">
+          <input class="mdl-textfield__input" type="email" v-model="user.email"  id="email">
           <label class="mdl-textfield__label" for="email">Email</label>
         </div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="password" id="password">
+          <input class="mdl-textfield__input" type="password"  v-model="user.password" id="password">
           <label class="mdl-textfield__label" for="password">Password</label>
         </div>
         <br/>
@@ -24,11 +24,34 @@
         </button>
         <br/>
         <br/>
-        <p>Already have an account ? <router-link to="/login">Login</router-link></p>
+        <p>Already have an account ? <a href="/login">Login</a></p>
       </form>
     </div>
   </div>
 </template>
+<script>
+import auth from '../router/auth'
+
+export default {
+  data() {
+    return {
+      user: {
+        name: '',
+        email: '',
+        password: ''
+      }
+    }
+  },
+  methods: {
+    registerUser() {
+      this.$http.post('https://readr.meetgodhani.com/api/register',this.user).then((res) => {
+        auth.login(res.data.token,res.data.user);
+        window.location = "/";
+      })
+    }
+  }
+}
+</script>
 <style lang="scss">
   .auth {
     min-height: 100vh;
