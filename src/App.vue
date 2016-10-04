@@ -3,6 +3,20 @@
     <router-view></router-view>
   </transition>
 </template>
+<script>
+export default {
+  created() {
+    this.fetchFeeds()
+  },
+  methods: {
+    fetchFeeds() {
+      this.$http.get('https://readr.meetgodhani.com/api/users').then((res) => {
+        console.log(res.data.feeds)
+      })
+    }
+  }
+}
+</script>
 <style lang="scss">
 @import "../node_modules/material-design-icons/iconfont/material-icons.css";
 @import "../node_modules/material-design-lite/src/material-design-lite";
