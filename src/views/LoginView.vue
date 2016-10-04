@@ -23,7 +23,7 @@
         </button>
         <br/>
         <br/>
-        <p>Haven't yet an account ?  <a href="/register">Register here</a></p>
+        <p>Haven't yet an account ?  <router-link to="/register">Register here</router-link></p>
       </form>
     </div>
   </div>
@@ -41,12 +41,15 @@ export default {
       error: ''
     }
   },
+  mounted(){
+     componentHandler.upgradeElements(this.$el)
+  },
   methods: {
     loginUser() {
       const self = this
       this.$http.post('https://readr.meetgodhani.com/api/login',this.user).then((res) => {
         auth.login(res.data.token,res.data.user);
-        window.location = "/";
+        self.$router.push('/');
       },(res) => {
         self.error = res.data.msg
       })
@@ -100,7 +103,7 @@ export default {
     }
 
     @media only screen and (max-width: 767px) {
-      max-width: 360px;
+      max-width: 340px;
     }
   }
 }

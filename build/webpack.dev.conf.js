@@ -17,6 +17,12 @@ module.exports = merge(baseWebpackConfig, {
   // eval-source-map is faster for development
   devtool: '#eval-source-map',
   plugins: [
+    new webpack.IgnorePlugin(/vertx/),
+    new webpack.NormalModuleReplacementPlugin(/^\.\/package$/, function(result) {
+      if(/cheerio/.test(result.context)) {
+        result.request = "./package.json"
+      }
+    }),
     new webpack.DefinePlugin({
       'process.env': config.dev.env
     }),

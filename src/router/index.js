@@ -7,6 +7,8 @@ Vue.use(Router)
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import DashboardView from '../views/DashboardView.vue'
+import SubscribeFeed from '../views/SubscribeFeed.vue'
+import ArticleView from '../views/ArticleView.vue'
 
 function requireAuth( to, from, next) {
   if(!auth.loggedIn()) {
@@ -30,6 +32,8 @@ export default new Router({
       auth.logout()
       next('/')
     }},
+    { path: '/article/:id', component: ArticleView, beforeEnter: requireAuth },
+    { path: '/subscribe', component: SubscribeFeed, beforeEnter: requireAuth },
     { path: '/', component: DashboardView, beforeEnter: requireAuth }
   ]
 })

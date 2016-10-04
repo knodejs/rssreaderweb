@@ -29,6 +29,13 @@ module.exports = {
   resolveLoader: {
     fallback: [path.join(__dirname, '../node_modules')]
   },
+  node: {
+    console: true,
+    fs: 'empty',
+    net: 'empty',
+    dns: 'empty',
+    tls: 'empty'
+  },
   module: {
     loaders: [
       {
