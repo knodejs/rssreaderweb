@@ -4,17 +4,18 @@
   </transition>
 </template>
 <script>
+import {mapActions} from 'vuex'
+
 export default {
   created() {
-    this.fetchFeeds()
-  },
-  methods: {
-    fetchFeeds() {
-      this.$http.get('https://readr.meetgodhani.com/api/users').then((res) => {
-        console.log(res.data.feeds)
-      })
+    if(localStorage.token) {
+      this.fetchFeeds()
     }
-  }
+  },
+
+  methods: mapActions([
+    'fetchFeeds'
+  ])
 }
 </script>
 <style lang="scss">

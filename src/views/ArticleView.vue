@@ -18,7 +18,7 @@
       <div class="articledetail-view" v-if="!loaded">
         <div class="mdl-spinner mdl-js-spinner is-active"></div>
       </div>
-      <div class="article-content" v-if="loaded">
+      <div class="article-contentview" v-if="loaded">
         <h3>{{ title }}</h3>
         <div v-html="content"></div>
       </div>
@@ -50,6 +50,19 @@ export default {
     },
     fetchData(id) {
       const self = this;
+      if('caches' in window) {
+        caches.match('https://readr.meetgodhani.com/api/articles/' + id).then(function(response) {
+          if(response) {
+            response.json().then(function updateFromCache(json) {
+              self.loaded = true
+              self.title = json.title
+              self.link = json.link
+              self.content = json.content
+            });
+          }
+        })
+      }
+
       this.$http.get('https://readr.meetgodhani.com/api/articles/' + id).then((res) => {
         self.loaded = true
         self.title = res.data.title
@@ -63,14 +76,15 @@ export default {
 <style lang="scss">
 .articledetail-view{
   display:flex;
+  padding-top:100px;
   justify-content: center;
-  align-items: center;
+  align-items: top;
   min-height: 100vh;
 }
-.article-content {
+.article-contentview {
   padding:25px;
   max-width: 800px;
-  margin: 20px auto;
+  margin: 0px auto;
   position: relative;
   background: white;
   blockquote {
@@ -83,7 +97,6 @@ export default {
   }
   img {
     max-width: 100%;
-    width: 100%;
     display: block;
     margin: 0 auto;
     margin-top: 20px;

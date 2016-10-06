@@ -11,6 +11,7 @@ registerComponent.registerGlobalComponents()
 
 Vue.use(VueResource)
 
+require('offline-plugin/runtime').install();
 
 if(localStorage.token) {
   Vue.http.headers.common['Authorization'] = 'Bearer ' + localStorage.token;

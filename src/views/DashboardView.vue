@@ -2,7 +2,7 @@
   <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header  mdl-layout--fixed-tabs">
     <header class="mdl-layout__header">
       <div class="mdl-layout__header-row">
-        <span class="mdl-layout-title">All</span>
+        <span class="mdl-layout-title">{{ navigationTitle }}</span>
         <div class="mdl-layout-spacer"></div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
           <label class="mdl-button mdl-js-button mdl-button--icon" for="fixed-header-drawer-exp">
@@ -19,8 +19,8 @@
         <span>Meet Godhani</span>
       </span>
       <nav class="mdl-navigation">
-        <a class="mdl-navigation__link" href="">Link</a>
-        <a class="mdl-navigation__link" href="">Link</a>
+        <a class="mdl-navigation__link">All Articles</a>
+        <a class="mdl-navigation__link feednavItem" href="#" v-for="feed in getFeeds" @click="changeFeed(feed.title,feed.id)"><img v-bind:src="feed.favicon" width="15" height="15"> {{ feed.title }}</a>
       </nav>
     </div>
     <main class="mdl-layout__content">
@@ -53,15 +53,22 @@
     </div>
   </template>
   <script>
-  import InfiniteLoading from 'vue-infinite-loading';
-  import moment from 'moment-timezone';
+  import InfiniteLoading from 'vue-infinite-loading'
+  import moment from 'moment-timezone'
+  import {mapGetters} from 'vuex'
 
   export default {
     data() {
       return {
+        navigationTitle: 'All',
         articles: [],
         url: null,
         page: 1
+      }
+    },
+    computed: {
+      getFeeds() {
+        return this.$store.state.feeds
       }
     },
     components: {
@@ -71,6 +78,11 @@
       componentHandler.upgradeElements(this.$el)
     },
     methods: {
+      changeFeed(title) {
+        var layout = document.querySelector('.mdl-layout');
+        layout.MaterialLayout.toggleDrawer();
+        this.navigationTitle = title;
+      },
       navigateToArticle(id) {
         return this.$router.push('/article/' + id);
       },
@@ -90,7 +102,11 @@
             if(response) {
               response.json().then(function updateFromCache(json) {
                 if(json.length > 0) {
-                  self.articles = self.artiles.concat(json);
+                  var resdata = json.map((item) => {
+                    item.published_at = moment.tz(item.published_at,"America/Toronto").fromNow();
+                    return item;
+                  });
+                  self.articles = self.articles.concat(resdata);
                   self.page++
                   self.$refs.InfiniteLoading.$emit('$InfiniteLoading:loaded');
                 } else {
@@ -122,7 +138,14 @@
     }
   }
   </script>
+
   <style lang="scss">
+
+  .feednavItem {
+    img {
+      margin-right:10px;
+    }
+  }
 
   .readr-drawer {
     border-right: 0px;

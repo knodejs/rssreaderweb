@@ -37,6 +37,12 @@ var webpackConfig = merge(baseWebpackConfig, {
         warnings: false
       }
     }),
+    new webpack.IgnorePlugin(/vertx/),
+    new webpack.NormalModuleReplacementPlugin(/^\.\/package$/, function(result) {
+      if(/cheerio/.test(result.context)) {
+        result.request = "./package.json"
+      }
+    }),
     new OfflinePlugin({
       caches: {
         main: [':rest:', '/']
