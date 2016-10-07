@@ -16,7 +16,7 @@ self.addEventListener('activate', function(e) {
 self.addEventListener('fetch', function(e) {
   console.log('[Service Worker] Fetch', e.request.url);
   var dataUrl = 'https://readr.meetgodhani.com/api/';
-  if(new RegExp('https:\/\/readr.meetgodhani.com\/api\/(users\/feeds|articles\/\d|articles|feeds\/\d\/articles|proxy)').test(e.request.url)) {
+  if(new RegExp('https:\/\/readr.meetgodhani.com\/api\/(users|users\/feeds|articles\/\d|articles|feeds\/\d\/articles|proxy)').test(e.request.url)) {
     e.respondWith(
       caches.open(dataCacheName).then(function(cache) {
         return fetch(e.request).then(function(response){
