@@ -21,8 +21,6 @@
     "vue-infinite-loading": "^2.0.0-rc.1",
     "vue-resource": "^1.0.3",
     "vue-router": "^2.0.0",
-    "vue-server-renderer": "^2.0.0-rc.8",
-    "vue-transfer-dom": "^1.1.0",
     "vuex": "^2.0.0"
   },
   "devDependencies": {
