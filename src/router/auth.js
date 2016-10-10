@@ -5,6 +5,7 @@ export default {
   },
   logout (cb){
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
   },
   loggedIn () {
     return !!localStorage.token
