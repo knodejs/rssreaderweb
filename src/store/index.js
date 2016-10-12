@@ -15,6 +15,7 @@ const actions = {
       caches.match('https://readr.meetgodhani.com/api/users').then(function(response) {
         if(response) {
           response.json().then(function updateFromCache(res) {
+            console.log(res)
             commit('SET_FEEDS',{ res })
           });
         }
@@ -29,7 +30,8 @@ const actions = {
 
 const mutations = {
   SET_FEEDS: (state, { res }) => {
-    state.feeds = res.data.feeds
+
+    state.feeds = res.data ? res.data.feeds : res.feeds
   },
   CHANGE_FEED: (state, { title, id }) => {
     state.currentFeed = title
