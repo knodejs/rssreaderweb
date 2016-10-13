@@ -19,7 +19,7 @@
         <span>{{ user.name }}</span>
       </span>
       <nav class="mdl-navigation">
-        <a class="mdl-navigation__link" @click="changeFeed('All','All')">All Articles</a>
+        <a class="mdl-navigation__link" href="" @click="changeFeed('All','All')">All Articles</a>
         <a class="mdl-navigation__link feednavItem" href="#" v-for="feed in getFeeds" @click="changeFeed(feed.title,feed.id)"><img v-bind:src="feed.favicon" width="15" height="15"> {{ feed.title }}</a>
       </nav>
     </div>

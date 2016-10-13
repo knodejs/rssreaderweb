@@ -4,23 +4,25 @@
       <button class="mdl-layout-icon mdl-button mdl-js-button mdl-button--icon" @click="previousPage">
         <i class="material-icons">arrow_back</i>
       </button>
+      <div class="mdl-layout-spacer"></div>
       <div class="mdl-layout__header-row">
         <div class="mdl-layout-spacer"></div>
         <nav class="mdl-navigation">
           <a class="mdl-navigation__link" v-bind:href="link" target="_blank"><i class="material-icons">open_in_browser</i></a>
-          <a class="mdl-navigation__link" href=""><i class="material-icons">done</i></a>
-          <a class="mdl-navigation__link" href=""><i class="material-icons">bookmark_border</i>
+          <a class="mdl-navigation__link" href="#"><i class="material-icons">done</i></a>
+          <a class="mdl-navigation__link" href="#"><i class="material-icons">bookmark_border</i>
           </a>
         </nav>
       </div>
     </header>
-    <main class="mdl-layout__content">
-      <div class="articledetail-view" v-if="!loaded">
-        <div class="mdl-spinner mdl-js-spinner is-active"></div>
-      </div>
-      <div class="article-contentview" v-if="loaded">
-        <h3>{{ title }}</h3>
-        <div v-html="content"></div>
+    <div class="contentlayout-ribbon"></div>
+    <main class="contentlayout-main mdl-layout__content">
+      <div class="contentlayout-container mdl-grid">
+        <div class="mdl-cell mdl-cell--2-col mdl-cell--hide-tablet mdl-cell--hide-phone"></div>
+        <div class="article-contentview mdl-color--white mdl-shadow--4dp content mdl-color-text--grey-800 mdl-cell mdl-cell--8-col" v-if="loaded">
+          <h3 class="title">{{ title }}</h3>
+          <div v-html="content"></div>
+        </div>
       </div>
     </main>
   </div>
@@ -74,6 +76,23 @@ export default {
 }
 </script>
 <style lang="scss">
+
+.contentlayout-main {
+  margin-top: -35vh;
+  flex-shrink: 0;
+}
+
+.contentlayout-container {
+  max-width: 1600px;
+  width: calc(100% - 10px);
+  margin: 0 auto;
+}
+.contentlayout-ribbon {
+  width: 100%;
+  height: 40vh;
+  background-color:#4A148C;
+  flex-shrink:0;
+}
 .articledetail-view{
   display:flex;
   padding-top:100px;
@@ -82,11 +101,9 @@ export default {
   min-height: 100vh;
 }
 .article-contentview {
-  padding:25px;
-  max-width: 800px;
-  margin: 0px auto;
-  position: relative;
-  background: white;
+  border-radius: 2px;
+  padding: 50px 36px;
+  margin-bottom: 80px;
   blockquote {
     font-size: 20px;
     line-height: 1.3;
@@ -98,7 +115,6 @@ export default {
   img {
     max-width: 100%;
     display: block;
-    margin: 0 auto;
     margin-top: 20px;
     margin-bottom: 20px;
     height: auto;
@@ -106,6 +122,11 @@ export default {
   h2 {
     font-size:25px;
   }
+
+  .title {
+    font-size: 27px;
+  }
+
   h3 {
     font-size: 20px;
     line-height:1.3;
