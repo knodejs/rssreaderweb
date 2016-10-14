@@ -5,58 +5,78 @@
         <i class="material-icons">arrow_back</i>
       </button>
       <div class="mdl-layout__header-row">
-        <span class="mdl-layout-title">Subscribe</span>
         <div class="mdl-layout-spacer"></div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="fixed-header-drawer-exp">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input class="mdl-textfield__input" type="text" name="sample" id="fixed-header-drawer-exp">
+          </div>
+        </div>
       </div>
     </header>
     <main class="mdl-layout__content">
-      <!-- List with avatar and controls -->
-      <ul class="demo-list-control mdl-list">
-        <li class="mdl-list__item">
-          <span class="mdl-list__item-primary-content">
-            <i class="material-icons  mdl-list__item-avatar">person</i>
-            Bryan Cranston
-          </span>
-          <span class="mdl-list__item-secondary-action">
-            <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="list-checkbox-1">
-              <input type="checkbox" id="list-checkbox-1" class="mdl-checkbox__input" />
-            </label>
-          </span>
-        </li>
-        <li class="mdl-list__item">
-          <span class="mdl-list__item-primary-content">
-            <i class="material-icons  mdl-list__item-avatar">person</i>
-            Aaron Paul
-          </span>
-          <span class="mdl-list__item-secondary-action">
-            <label class="demo-list-radio mdl-radio mdl-js-radio mdl-js-ripple-effect" for="list-option-1">
-              <input type="radio" id="list-option-1" class="mdl-radio__button" name="options" value="1" checked />
-            </label>
-          </span>
-        </li>
-        <li class="mdl-list__item">
-          <span class="mdl-list__item-primary-content">
-            <i class="material-icons  mdl-list__item-avatar">person</i>
-            Bob Odenkirk
-          </span>
-          <span class="mdl-list__item-secondary-action">
-            <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="list-switch-1">
-              <input type="checkbox" id="list-switch-1" class="mdl-switch__input" checked />
-            </label>
-          </span>
-        </li>
-      </ul>
+      <div class="page-content">
+        <div class="article-list">
+          <ul>
+            <li class="news-item feed-item" v-for="feed in feeds">
+              <p class="feed-title"><img v-bind:src="feed.favicon" width="20" height="20"> {{ feed.title }}</p>
+              <p>{{ feed.description }}</p>
+              <button v-if="!feed.subscribed" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                Subscribe
+              </button>
+              <button v-if="feed.subscribed" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                Unsubscribe
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
     </main>
   </div>
 </template>
+<style lang="scss">
+.search-container {
+  padding-left:15px;
+  width:100%;
+}
+.article-list {
+  .feed-item {
+    cursor: default !important;
+    .feed-title {
+      font-size: 18px;
+      img {
+        margin-right:10px;
+      }
+    }
+    .subscribe-button {
+      float:right;
+      top: -35px;
+    }
+  }
+}
+</style>
 <script>
 export default {
+  data() {
+    return {
+      feeds: null
+    }
+  },
   mounted(){
     componentHandler.upgradeElements(this.$el)
+    this.getFeeds()
   },
   methods: {
     previousPage() {
       return this.$router.go(-1);
+    },
+    getFeeds() {
+      const self = this
+      this.$http.get('https://readr.meetgodhani.com/api/feeds').then((res) => {
+        self.feeds = res.data
+      })
     }
   }
 }
