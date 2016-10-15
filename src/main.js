@@ -11,6 +11,8 @@ registerComponent.registerGlobalComponents()
 
 Vue.use(VueResource)
 
+Vue.config.silent = true
+
 require('offline-plugin/runtime').install();
 
 if(localStorage.token) {

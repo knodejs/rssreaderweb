@@ -11,7 +11,7 @@
             <i class="material-icons">search</i>
           </label>
           <div class="mdl-textfield__expandable-holder">
-            <input class="mdl-textfield__input" type="text" name="sample" id="fixed-header-drawer-exp">
+            <input class="mdl-textfield__input" type="text" v-model="searchTerm" name="sample" id="fixed-header-drawer-exp">
           </div>
         </div>
       </div>
@@ -20,7 +20,7 @@
       <div class="page-content">
         <div class="article-list">
           <ul>
-            <li class="news-item feed-item" v-for="feed in getAllFeeds">
+            <li class="news-item feed-item" v-for="feed in getAllFeeds" :key="feed.id">
               <p class="feed-title"><img v-bind:src="feed.favicon" width="20" height="20"> {{ feed.title }}</p>
               <p>{{ feed.description }}</p>
               <button v-if="!feed.subscribed" @click="subscribeFeed(feed.id)" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
@@ -62,7 +62,8 @@ import {mapGetters, mapActions} from 'vuex'
 export default {
   data() {
     return {
-      feeds: null
+      feeds: null,
+      searchTerm: null
     }
   },
   mounted(){
@@ -70,6 +71,14 @@ export default {
   },
   computed: {
     getAllFeeds() {
+      const self = this
+      if(this.searchTerm){
+        return this.$store.state.allFeeds.filter((row) => {
+          return Object.keys(row).some(function (key) {
+           return String(row[key]).toLowerCase().indexOf(self.searchTerm) > -1
+         })
+        })
+      }
       return this.$store.state.allFeeds
     }
   },
