@@ -20,13 +20,13 @@
       <div class="page-content">
         <div class="article-list">
           <ul>
-            <li class="news-item feed-item" v-for="feed in feeds">
+            <li class="news-item feed-item" v-for="feed in getAllFeeds">
               <p class="feed-title"><img v-bind:src="feed.favicon" width="20" height="20"> {{ feed.title }}</p>
               <p>{{ feed.description }}</p>
-              <button v-if="!feed.subscribed" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+              <button v-if="!feed.subscribed" @click="subscribeFeed(feed.id)" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                 Subscribe
               </button>
-              <button v-if="feed.subscribed" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+              <button v-if="feed.subscribed" @click="unsubscribeFeed(feed.id)" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                 Unsubscribe
               </button>
             </li>
@@ -58,6 +58,7 @@
 }
 </style>
 <script>
+import {mapGetters, mapActions} from 'vuex'
 export default {
   data() {
     return {
@@ -66,18 +67,20 @@ export default {
   },
   mounted(){
     componentHandler.upgradeElements(this.$el)
-    this.getFeeds()
+  },
+  computed: {
+    getAllFeeds() {
+      return this.$store.state.allFeeds
+    }
   },
   methods: {
     previousPage() {
       return this.$router.go(-1);
     },
-    getFeeds() {
-      const self = this
-      this.$http.get('https://readr.meetgodhani.com/api/feeds').then((res) => {
-        self.feeds = res.data
-      })
-    }
+    ...mapActions([
+      'subscribeFeed',
+      'unsubscribeFeed'
+    ])
   }
 }
 </script>

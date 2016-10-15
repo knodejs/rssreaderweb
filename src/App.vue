@@ -10,11 +10,13 @@ export default {
   created() {
     if(localStorage.token) {
       this.fetchFeeds()
+      this.fetchAllFeeds()
     }
   },
 
   methods: mapActions([
-    'fetchFeeds'
+    'fetchFeeds',
+    'fetchAllFeeds'
   ])
 }
 </script>
